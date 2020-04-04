@@ -22,7 +22,7 @@ namespace AccountManagement.Services
             Configuration = configuration;
 
             Options = new DbContextOptionsBuilder<AccountManagementDbContext>()
-                .UseSqlServer(Configuration.GetConnectionString("AccoutMangementDBConnection"))
+                .UseSqlServer(Configuration.GetConnectionString("AccoutManagementDBConnection"))
                 .Options;
         }
 

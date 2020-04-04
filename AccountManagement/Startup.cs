@@ -19,18 +19,26 @@ namespace AccountManagement
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
+            CurrentEnvironment = env;
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{CurrentEnvironment.EnvironmentName}.json")
+                .AddEnvironmentVariables()
+                .Build();
+
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
+        private IWebHostEnvironment CurrentEnvironment { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<AccountManagementDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AccoutMangementDBConnection")));
+            services.AddDbContext<AccountManagementDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AccoutManagementDBConnection")));
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IMeteringUnitService, MeteringUnitService>();
