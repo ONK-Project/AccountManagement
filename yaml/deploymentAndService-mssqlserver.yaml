@@ -31,7 +31,13 @@ spec:
         - name: MSSQL_DATA_DIR
           value: /var/opt/mssql/mdf
         - name: MSSQL_LOG_DIR
-          value: /var/opt/mssql/ldf          
+          value: /var/opt/mssql/ldf 
+        resources:
+            limits:
+              memory: 2Gi
+            requests:
+              memory: 1Gi
+              
         volumeMounts:
         - name: accountmanagement-base-volume
           mountPath: /var/opt/mssql
@@ -55,6 +61,8 @@ kind: Service
 metadata:
   namespace: proj-gr4
   name: mssqlserver
+  labels:
+    app: mssqlserver
 spec:
   selector:
     app: mssqlserver
@@ -62,4 +70,3 @@ spec:
     - protocol: TCP
       port: 1433
       targetPort: 1433
-  type: LoadBalancer
